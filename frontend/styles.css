@@ -1,7 +1,20 @@
-h1{
-    color:gold;
-    font-size: 60px;
+h1 {
+    background: linear-gradient(
+    45deg,
+    #ff0000,
+    #8a2be2,
+    #0066ff
+);
+}
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
 }
 #servicios{
     color:blue;
+}
+p{
+    color:burlywood;
 }
