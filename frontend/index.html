@@ -1,98 +1,63 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Impulso Digital</title>
-    <link rel="stylesheet" href="./styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impulso Digital</title>
+<link rel="stylesheet" href="./styles.css">
 </head>
-
 <body>
 
-    <!-- Encabezado principal de Impulso Digital -->
+    <!-- Encabezado con logo y menú -->
     <header>
-        <h1>Impulso Digital</h1>
-
-        <p>Llevamos tu negocio al mundo digital</p>
-
+        <div class="logo">
+            <h1>Impulso <span>Digital</span></h1>
+        </div>
         <nav>
-            <a href="#inicio">Inicio</a>
-            <a href="#servicios">Servicios</a>
-            <a href="#contacto">Contacto</a>
+            <ul>
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#contacto-principal">Contacto</a></li>
+            </ul>
         </nav>
     </header>
 
-
+    <!-- Contenedor principal del contenido -->
     <main>
-
-        <!-- Sección principal de presentación -->
+        <!-- Sección de presentación -->
         <section id="inicio">
             <h2>Haz crecer tu negocio en internet</h2>
-
-            <p>
-                En Impulso Digital ayudamos a pequeños negocios y
-                emprendimientos a crear y mejorar su presencia en internet.
-            </p>
-
-            <p>
-                Nuestro objetivo es facilitar el acceso al mundo digital
-                para que más emprendedores puedan ser encontrados por
-                nuevos clientes.
-            </p>
+            <p>En Impulso Digital ayudamos a pequeños negocios y emprendedores a crear y mejorar su presencia en internet.</p>
+            <p>Nuestro objetivo es facilitar el acceso al mundo digital para que más emprendedores puedan ser encontrados por nuevos clientes.</p>
+            <button>Conoce más</button>
         </section>
 
-        <!-- Sección de servicios digitales -->
+        <!-- Sección de servicios -->
         <section id="servicios">
             <h2>Nuestros servicios</h2>
-
             <article>
-                <h3>Presencia digital para tu negocio</h3>
-
-                <img
-                    src="https://images.unsplash.com/photo-1460925895917-afdab827c52f"
-                    alt="Computador mostrando herramientas digitales para impulsar un pequeño negocio"
-                    width="500"
-                >
-
-                <p>
-                    Ayudamos a emprendedores y pequeños negocios a dar
-                    sus primeros pasos en el mundo digital.
-                </p>
+                <h3>Presencia digital</h3>
+                <p>Ayudamos a emprendedores y pequeños negocios a dar sus primeros pasos en el mundo digital.</p>
             </article>
-
             <article>
-                <h3>Creación de perfiles en redes sociales</h3>
-
-                <p>
-                    Creamos y organizamos perfiles comerciales para que
-                    tu negocio tenga una imagen profesional en redes sociales.
-                </p>
+                <h3>Redes Sociales</h3>
+                <p>Creamos y organizamos perfiles comerciales para que tu negocio tenga una imagen profesional en redes sociales.</p>
             </article>
-
             <article>
-                <h3>Registro en Google Maps</h3>
-
-                <p>
-                    Ayudamos a crear y configurar la ficha de tu negocio
-                    para que tus clientes puedan encontrarte fácilmente
-                    en Google y Google Maps.
-                </p>
+                <h3>Google Maps</h3>
+                <p>Ayudamos a crear y configurar la ficha de tu negocio para que tus clientes puedan encontrarte fácilmente en Google y Google Maps.</p>
             </article>
         </section>
 
-        <!-- Sección para que los clientes puedan contactarnos -->
-        <section id="contacto">
-            <h2>Contacto</h2>
-
-            <p>
-                ¿Quieres llevar tu negocio al mundo digital?
-                Estamos listos para ayudarte.
-            </p>
-
-            <p>Correo: contacto@impulsodigital.com</p>
-            <p>Teléfono: 300 000 0000</p>
+        <!-- Sección de contacto  -->
+        <section id="contacto-principal">
+            <h2>Contáctanos</h2>
+            <p>Estamos listos para ayudarte a llevar tu negocio al mundo digital.</p>
+            <div class="botones-contacto">
+                <button onclick="window.location.href='mailto:contacto@impulsodigital.com'">Enviar correo</button>
+                <button onclick="window.location.href='https://wa.me/3127223859'">WhatsApp</button>
+            </div>
         </section>
-
     </main>
 
     <footer>
@@ -101,5 +66,4 @@
     </footer>
 
 </body>
-
 </html>

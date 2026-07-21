@@ -1,20 +1,122 @@
-h1 {
-    background: linear-gradient(
-    45deg,
-    #ff0000,
-    #8a2be2,
-    #0066ff
-);
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-    -webkit-background-clip: text;
-    background-clip: text;
+/* FONDO */
+html, body {
+    min-height: 100%;
+    font-family: Arial, sans-serif;
+    color: white;
+}
 
+body {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                url('img/fondo.png') center/cover no-repeat fixed;
+}
+
+/* HEADER */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+}
+
+header h1 {
+    font-size: 50px;
+    background: linear-gradient(45deg, #ff0000, #8a2be2, #0066ff);
+    -webkit-background-clip: text;
     color: transparent;
 }
-#servicios{
-    color:blue;
+
+/* Menú superior alineado horizontal a la derecha */
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
 }
-p{
-    color:burlywood;
+
+nav a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: #ff3c00;
+}
+
+/* MAIN - contenido fluye normalmente vertical */
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 20px 50px;
+}
+
+/* Secciones */
+section {
+    margin-bottom: 80px;
+}
+
+/* Títulos y párrafos */
+main h2 {
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+/* Centrar solo ciertos párrafos si quieres */
+section#inicio p {
+    text-align: left;
+    max-width: 700px;
+    margin: 0 auto 30px;
+}
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;        /* centra el contenedor principal horizontalmente */
+    padding: 150px 20px 50px;
+    text-align: left;       /* cambia texto alineado a la izquierda */
+}
+
+/* Aseguramos que los párrafos de inicio también respeten ancho máximo */
+section#inicio p {
+    max-width: 700px;
+    margin: 0 0 20px 0;    /* mantiene separación vertical */
+}
+
+/* Servicios */
+section#servicios article {
+    margin: 20px 0;
+}
+
+/* Contacto (anterior portafolio reemplazado) */
+#contacto-principal {
+    text-align: center;
+}
+
+#contacto-principal .botones-contacto button {
+    margin: 10px;
+    padding: 12px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    background-color: #ff3c00;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#contacto-principal .botones-contacto button:hover {
+    background-color: white;
+    color: #ff3c00;
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 30px 0;
+    background: rgba(0,0,0,0.7);
 }
