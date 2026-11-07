@@ -1,0 +1,12 @@
+
+# Dependencias
+node_modules/
+
+# Credenciales privadas
+.env
+.env.*
+!.env.example
+
+# Archivos generados
+dist/
+*.log
