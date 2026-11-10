@@ -1,0 +1,284 @@
+
+#root {
+  width: 100%;
+}
+
+/* PORTADA */
+.portada {
+  min-height: 100vh;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.88),
+      rgba(0, 0, 0, 0.38)
+    ),
+    url("/img/fondo.png") center / cover no-repeat;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.encabezado {
+  width: min(1180px, 92%);
+  margin: 0 auto;
+  padding: 28px 0;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.marca {
+  font-size: 29px;
+  font-weight: 800;
+  text-decoration: none;
+  color: white;
+}
+
+.marca span {
+  color: #ff4938;
+}
+
+.encabezado nav {
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+.encabezado nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.encabezado nav a:hover {
+  color: #ff4938;
+}
+
+.portada-contenido {
+  width: min(1180px, 92%);
+  margin: auto;
+  padding: 100px 0;
+}
+
+.portada-contenido h1 {
+  max-width: 720px;
+  font-size: clamp(40px, 6vw, 76px);
+  line-height: 1.1;
+  margin: 20px 0;
+}
+
+.portada-contenido h1 span {
+  color: #ff4938;
+}
+
+.portada-contenido > p:not(.etiqueta) {
+  max-width: 570px;
+  color: #dfdfdf;
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+/* BOTONES */
+.botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 34px;
+}
+
+.boton {
+  display: inline-block;
+  padding: 15px 26px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.25s;
+}
+
+.boton-rojo {
+  background: #ed382b;
+  color: white;
+}
+
+.boton-rojo:hover {
+  background: #bd271f;
+}
+
+.boton-borde {
+  border: 1px solid #dddddd;
+  color: white;
+}
+
+.boton-borde:hover {
+  background: white;
+  color: #111111;
+}
+
+/* SECCIONES */
+.seccion {
+  width: min(1180px, 92%);
+  margin: 0 auto;
+  padding: 100px 0;
+}
+
+.etiqueta {
+  color: #ff5546;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.seccion h2 {
+  max-width: 820px;
+  font-size: clamp(30px, 4vw, 48px);
+  line-height: 1.2;
+  margin: 16px 0 25px;
+}
+
+.texto-seccion {
+  max-width: 780px;
+  color: #bcbfc7;
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+/* CATÁLOGO */
+.catalogo {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: 45px;
+}
+
+.tarjeta {
+  padding: 32px;
+  background: #191c24;
+  border: 1px solid #333742;
+  border-radius: 14px;
+  transition: 0.3s;
+}
+
+.tarjeta:hover {
+  transform: translateY(-6px);
+  border-color: #ff4938;
+}
+
+.numero {
+  color: #ff4938;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.tarjeta h3 {
+  margin: 26px 0 14px;
+  font-size: 23px;
+}
+
+.tarjeta p {
+  color: #bcbfc7;
+  line-height: 1.7;
+  min-height: 115px;
+}
+
+.tarjeta a {
+  color: #ff5546;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* PROCESO */
+.pasos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 26px;
+  margin-top: 45px;
+}
+
+.pasos article {
+  padding: 25px;
+  border-top: 2px solid #ff4938;
+}
+
+.pasos span {
+  color: #ff4938;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.pasos h3 {
+  margin-top: 22px;
+}
+
+.pasos p {
+  color: #bcbfc7;
+  line-height: 1.7;
+}
+
+/* CONTACTO */
+.contacto {
+  background: #191c24;
+  border: 1px solid #333742;
+  border-radius: 18px;
+  padding: 65px;
+  margin-bottom: 85px;
+}
+
+.contacto p:not(.etiqueta) {
+  max-width: 680px;
+  color: #c9cbd0;
+  line-height: 1.8;
+  margin-bottom: 30px;
+}
+
+/* PIE DE PÁGINA */
+footer {
+  padding: 30px;
+  text-align: center;
+  background: #080a0f;
+  color: #9398a4;
+  font-size: 14px;
+}
+
+/* CELULARES Y TABLETAS */
+@media (max-width: 850px) {
+  .encabezado {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .catalogo,
+  .pasos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .encabezado nav {
+    gap: 14px;
+    font-size: 14px;
+  }
+
+  .portada-contenido {
+    padding: 70px 0;
+  }
+
+  .catalogo,
+  .pasos {
+    grid-template-columns: 1fr;
+  }
+
+  .tarjeta p {
+    min-height: auto;
+  }
+
+  .contacto {
+    padding: 30px 22px;
+  }
+
+  .botones {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
