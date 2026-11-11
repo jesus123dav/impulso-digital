@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { obtenerServicios } from "./api";
+import { obtenerServicios, enviarSolicitud } from "./api";
 import "./App.css";
 
 
@@ -174,11 +174,74 @@ function Proceso() {
 }
 
 function Contacto() {
+  const [formulario, setFormulario] = useState({
+    nombre: "",
+    negocio: "",
+    correo: "",
+    telefono: "",
+    servicio: "",
+    mensaje: ""
+  });
+
+  const [enviando, setEnviando] = useState(false);
+  const [respuesta, setRespuesta] = useState({
+    tipo: "",
+    texto: ""
+  });
+
+  // Actualizar los datos del formulario
+  const manejarCambio = (event) => {
+    const { name, value } = event.target;
+
+    setFormulario((anterior) => ({
+      ...anterior,
+      [name]: value
+    }));
+  };
+
+  // Enviar los datos al backend
+  const manejarEnvio = async (event) => {
+    event.preventDefault();
+
+    setEnviando(true);
+    setRespuesta({ tipo: "", texto: "" });
+
+    try {
+      const resultado = await enviarSolicitud(formulario);
+
+      setRespuesta({
+        tipo: "exito",
+        texto: resultado.mensaje
+      });
+
+      setFormulario({
+        nombre: "",
+        negocio: "",
+        correo: "",
+        telefono: "",
+        servicio: "",
+        mensaje: ""
+      });
+
+    } catch (error) {
+      setRespuesta({
+        tipo: "error",
+        texto: error.message
+      });
+
+    } finally {
+      setEnviando(false);
+    }
+  };
+
   return (
     <section id="contacto" className="seccion contacto">
+
       <p className="etiqueta">HABLEMOS DE TU NEGOCIO</p>
 
-      <h2>¿Listo para comenzar tu transformación digital?</h2>
+      <h2>
+        ¿Listo para comenzar tu transformación digital?
+      </h2>
 
       <p>
         Cuéntanos sobre tu emprendimiento y descubre
@@ -186,17 +249,122 @@ function Contacto() {
         en internet.
       </p>
 
-      <a
-        className="boton boton-rojo"
-        href="https://wa.me/3127223859"
-        target="_blank"
-        rel="noopener noreferrer"
+      <form
+        className="formulario-contacto"
+        onSubmit={manejarEnvio}
       >
-        Contactar por WhatsApp
-      </a>
+
+        <div className="campo">
+          <label htmlFor="nombre">Nombre completo *</label>
+          <input
+            id="nombre"
+            name="nombre"
+            type="text"
+            value={formulario.nombre}
+            onChange={manejarCambio}
+            required
+          />
+        </div>
+
+        <div className="campo">
+          <label htmlFor="negocio">Nombre del negocio</label>
+          <input
+            id="negocio"
+            name="negocio"
+            type="text"
+            value={formulario.negocio}
+            onChange={manejarCambio}
+          />
+        </div>
+
+        <div className="campo">
+          <label htmlFor="correo">Correo electrónico *</label>
+          <input
+            id="correo"
+            name="correo"
+            type="email"
+            value={formulario.correo}
+            onChange={manejarCambio}
+            required
+          />
+        </div>
+
+        <div className="campo">
+          <label htmlFor="telefono">Teléfono</label>
+          <input
+            id="telefono"
+            name="telefono"
+            type="tel"
+            value={formulario.telefono}
+            onChange={manejarCambio}
+          />
+        </div>
+
+        <div className="campo campo-completo">
+          <label htmlFor="servicio">Servicio de interés *</label>
+
+          <select
+            id="servicio"
+            name="servicio"
+            value={formulario.servicio}
+            onChange={manejarCambio}
+            required
+          >
+            <option value="">Selecciona un servicio</option>
+            <option value="Gestión de redes sociales">
+              Gestión de redes sociales
+            </option>
+            <option value="Presencia digital">
+              Presencia digital
+            </option>
+            <option value="Google Maps">
+              Google Maps
+            </option>
+            <option value="Diseño de páginas web">
+              Diseño de páginas web
+            </option>
+            <option value="Asesoría digital">
+              Asesoría digital
+            </option>
+          </select>
+        </div>
+
+        <div className="campo campo-completo">
+          <label htmlFor="mensaje">¿Cómo podemos ayudarte? *</label>
+
+          <textarea
+            id="mensaje"
+            name="mensaje"
+            rows="5"
+            value={formulario.mensaje}
+            onChange={manejarCambio}
+            required
+          />
+        </div>
+
+        <button
+          className="boton boton-rojo"
+          type="submit"
+          disabled={enviando}
+        >
+          {enviando ? "Enviando..." : "Enviar solicitud"}
+        </button>
+
+        {respuesta.texto && (
+          <p
+            className={`mensaje-formulario ${respuesta.tipo}`}
+            role="status"
+          >
+            {respuesta.texto}
+          </p>
+        )}
+
+      </form>
+
     </section>
   );
 }
+
 
 function App() {
   return (

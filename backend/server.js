@@ -47,6 +47,50 @@ const servicioSchema = new mongoose.Schema(
 
 const Servicio = mongoose.model("Servicio", servicioSchema);
 
+// MODELO DE SOLICITUDES DE CONTACTO
+const solicitudSchema = new mongoose.Schema({
+  nombre: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  negocio: {
+    type: String,
+    trim: true
+  },
+  correo: {
+    type: String,
+    required: true,
+    trim: true,
+    lowercase: true
+  },
+  telefono: {
+    type: String,
+    trim: true
+  },
+  servicio: {
+    type: String,
+    required: true
+  },
+  mensaje: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  fecha: {
+    type: Date,
+    default: Date.now
+  }
+}, {
+  collection: "solicitudes"
+});
+
+const Solicitud = mongoose.model(
+  "Solicitud",
+  solicitudSchema
+);
+
+
 // 4. RUTA PRINCIPAL
 app.get("/", (req, res) => {
   res.json({
@@ -81,6 +125,48 @@ app.get("/api/servicios", async (req, res) => {
     });
   }
 });
+
+// RECIBIR SOLICITUDES DE LOS CLIENTES
+app.post("/api/contacto", async (req, res) => {
+  try {
+    const {
+      nombre,
+      negocio,
+      correo,
+      telefono,
+      servicio,
+      mensaje
+    } = req.body;
+
+    if (!nombre || !correo || !servicio || !mensaje) {
+      return res.status(400).json({
+        mensaje: "Completa los campos obligatorios"
+      });
+    }
+
+    const nuevaSolicitud = await Solicitud.create({
+      nombre,
+      negocio,
+      correo,
+      telefono,
+      servicio,
+      mensaje
+    });
+
+    res.status(201).json({
+      mensaje: "Solicitud recibida correctamente",
+      id: nuevaSolicitud._id
+    });
+
+  } catch (error) {
+    console.error("Error al guardar solicitud:", error.message);
+
+    res.status(500).json({
+      mensaje: "No se pudo guardar la solicitud"
+    });
+  }
+});
+
 
 // 6. CONECTAR A MONGODB
 async function iniciarServidor() {
