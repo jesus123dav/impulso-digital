@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { obtenerServicios, enviarSolicitud } from "./api";
 import "./App.css";
+import LoginAdmin from "./components/LoginAdmin";
 
 
 function Catalogo() {
@@ -367,6 +368,16 @@ function Contacto() {
 
 
 function App() {
+  const [verAdministrador, setVerAdministrador] = useState(false);
+
+  if (verAdministrador) {
+    return (
+      <LoginAdmin
+        onVolver={() => setVerAdministrador(false)}
+      />
+    );
+  }
+
   return (
     <>
       <Portada />
@@ -379,8 +390,20 @@ function App() {
       </main>
 
       <footer>
-        <p>© 2026 Impulso Digital. Todos los derechos reservados.</p>
+        <p>
+          © 2026 Impulso Digital.
+          Todos los derechos reservados.
+        </p>
+
         <p>Proyecto de Jóvenes Creativos.</p>
+
+        <button
+          type="button"
+          className="enlace-admin"
+          onClick={() => setVerAdministrador(true)}
+        >
+          Acceso administrador
+        </button>
       </footer>
     </>
   );

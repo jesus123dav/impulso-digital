@@ -30,3 +30,41 @@ export async function enviarSolicitud(solicitud) {
 
   return datos;
 }
+
+export async function iniciarSesionAdmin(correo, password) {
+  const respuesta = await fetch(`${API_URL}/api/admin/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ correo, password })
+  });
+
+  const datos = await respuesta.json().catch(() => ({}));
+
+  if (!respuesta.ok) {
+    throw new Error(datos.mensaje || "No se pudo iniciar sesión");
+  }
+
+  if (!datos.token) {
+    throw new Error("No se recibió el token de acceso");
+  }
+
+  return datos;
+}
+
+export async function obtenerPerfilAdmin(token) {
+  const respuesta = await fetch(`${API_URL}/api/admin/perfil`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  const datos = await respuesta.json().catch(() => ({}));
+
+  if (!respuesta.ok) {
+    throw new Error(datos.mensaje || "Acceso no autorizado");
+  }
+
+  return datos;
+}

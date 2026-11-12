@@ -358,3 +358,84 @@ footer {
     grid-column: auto;
   }
 }
+
+/* ACCESO ADMINISTRATIVO */
+
+.pagina-admin {
+  min-height: 100vh;
+  background: #0e1118;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 20px;
+}
+
+.admin-contenedor {
+  width: 100%;
+  max-width: 440px;
+  padding: 40px;
+  border-radius: 16px;
+  background: #191c24;
+  border: 1px solid #343945;
+}
+
+.admin-contenedor h1 {
+  font-size: 30px;
+  margin-bottom: 18px;
+}
+
+.admin-contenedor p {
+  color: #c7cbd3;
+  line-height: 1.6;
+}
+
+.admin-contenedor form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.admin-contenedor label {
+  font-weight: 600;
+}
+
+.admin-contenedor input {
+  width: 100%;
+  padding: 14px;
+  color: white;
+  background: #10131a;
+  border: 1px solid #404654;
+  border-radius: 8px;
+}
+
+.admin-contenedor input:focus {
+  outline: 2px solid #ff4938;
+}
+
+.admin-contenedor form button {
+  margin-top: 12px;
+  border: none;
+  cursor: pointer;
+}
+
+.volver-admin,
+.enlace-admin {
+  background: transparent;
+  border: none;
+  color: #bfc4cd;
+  cursor: pointer;
+  margin-top: 22px;
+  font: inherit;
+}
+
+.volver-admin:hover,
+.enlace-admin:hover {
+  color: #ff4938;
+}
+
+@media (max-width: 600px) {
+  .admin-contenedor {
+    padding: 25px;
+  }
+}
