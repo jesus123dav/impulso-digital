@@ -350,6 +350,130 @@ app.post("/api/admin/servicios", verificarToken, async (req, res) => {
   }
 });
 
+// EDITAR UN SERVICIO - SOLO ADMINISTRADOR
+app.patch("/api/admin/servicios/:id", verificarToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { nombre, categoria, descripcion } = req.body || {};
+
+    // Comprobar que el identificador sea válido
+    if (!mongoose.isObjectIdOrHexString(id)) {
+      return res.status(400).json({
+        mensaje: "Identificador de servicio inválido"
+      });
+    }
+
+    // Validar los datos recibidos
+    if (
+      typeof nombre !== "string" ||
+      typeof categoria !== "string" ||
+      typeof descripcion !== "string"
+    ) {
+      return res.status(400).json({
+        mensaje: "Todos los campos deben contener texto"
+      });
+    }
+
+    const datos = {
+      nombre: nombre.trim(),
+      categoria: categoria.trim(),
+      descripcion: descripcion.trim()
+    };
+
+    if (
+      !datos.nombre ||
+      !datos.categoria ||
+      !datos.descripcion ||
+      datos.nombre.length > 100 ||
+      datos.categoria.length > 80 ||
+      datos.descripcion.length > 1000
+    ) {
+      return res.status(400).json({
+        mensaje: "Revisa los campos y sus longitudes"
+      });
+    }
+
+    // Actualizar el servicio en MongoDB
+    const servicioActualizado = await Servicio.findByIdAndUpdate(
+      id,
+      { $set: datos },
+      {
+        returnDocument: "after",
+        runValidators: true
+      }
+    );
+
+    if (!servicioActualizado) {
+      return res.status(404).json({
+        mensaje: "Servicio no encontrado"
+      });
+    }
+
+    res.status(200).json({
+      mensaje: "Servicio actualizado correctamente",
+      servicio: servicioActualizado
+    });
+
+  } catch (error) {
+    console.error("Error al editar servicio:", error.message);
+
+    res.status(500).json({
+      mensaje: "No se pudo actualizar el servicio"
+    });
+  }
+});
+
+
+// ACTIVAR O DESACTIVAR UN SERVICIO
+app.patch("/api/admin/servicios/:id/estado", verificarToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { activo } = req.body || {};
+
+    if (!mongoose.isObjectIdOrHexString(id)) {
+      return res.status(400).json({
+        mensaje: "Identificador de servicio inválido"
+      });
+    }
+
+    if (typeof activo !== "boolean") {
+      return res.status(400).json({
+        mensaje: "El estado debe ser verdadero o falso"
+      });
+    }
+
+    // Cambiar únicamente el estado del servicio
+    const servicioActualizado = await Servicio.findByIdAndUpdate(
+      id,
+      { $set: { activo } },
+      {
+        returnDocument: "after",
+        runValidators: true
+      }
+    );
+
+    if (!servicioActualizado) {
+      return res.status(404).json({
+        mensaje: "Servicio no encontrado"
+      });
+    }
+
+    res.status(200).json({
+      mensaje: activo
+        ? "Servicio activado correctamente"
+        : "Servicio desactivado correctamente",
+      servicio: servicioActualizado
+    });
+
+  } catch (error) {
+    console.error("Error al cambiar estado:", error.message);
+
+    res.status(500).json({
+      mensaje: "No se pudo cambiar el estado del servicio"
+    });
+  }
+});
+
 // 6. CONECTAR A MONGODB
 async function iniciarServidor() {
   try {

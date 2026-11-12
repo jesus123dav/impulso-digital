@@ -134,3 +134,51 @@ export async function crearServicioAdmin(token, servicio) {
 
   return datos;
 }
+
+export async function editarServicioAdmin(token, id, servicio) {
+  const respuesta = await fetch(
+    `${API_URL}/api/admin/servicios/${id}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(servicio)
+    }
+  );
+
+  const datos = await respuesta.json();
+
+  if (!respuesta.ok) {
+    throw new Error(
+      datos.mensaje || "No se pudo editar el servicio"
+    );
+  }
+
+  return datos;
+}
+
+export async function cambiarEstadoServicioAdmin(token, id, activo) {
+  const respuesta = await fetch(
+    `${API_URL}/api/admin/servicios/${id}/estado`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ activo })
+    }
+  );
+
+  const datos = await respuesta.json();
+
+  if (!respuesta.ok) {
+    throw new Error(
+      datos.mensaje || "No se pudo cambiar el estado"
+    );
+  }
+
+  return datos;
+}
