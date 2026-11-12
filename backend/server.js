@@ -256,6 +256,29 @@ app.get("/api/admin/perfil", verificarToken, (req, res) => {
   });
 });
 
+ // CONSULTAR SOLICITUDES - SOLO ADMINISTRADOR
+app.get("/api/admin/solicitudes", verificarToken, async (req, res) => {
+  try {
+    // Buscar las solicitudes registradas en MongoDB
+    const solicitudes = await Solicitud.find()
+      .sort({ fecha: -1 })
+      .lean();
+
+    // Enviar las solicitudes al administrador
+    res.status(200).json(solicitudes);
+
+  } catch (error) {
+    console.error(
+      "Error al consultar solicitudes:",
+      error.message
+    );
+
+    res.status(500).json({
+      mensaje: "No se pudieron consultar las solicitudes"
+    });
+  }
+});
+
 // 6. CONECTAR A MONGODB
 async function iniciarServidor() {
   try {

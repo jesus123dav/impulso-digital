@@ -68,3 +68,24 @@ export async function obtenerPerfilAdmin(token) {
 
   return datos;
 }
+
+export async function obtenerSolicitudesAdmin(token) {
+  const respuesta = await fetch(
+    `${API_URL}/api/admin/solicitudes`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  const datos = await respuesta.json().catch(() => ({}));
+
+  if (!respuesta.ok) {
+    throw new Error(
+      datos.mensaje || "No se pudieron cargar las solicitudes"
+    );
+  }
+
+  return datos;
+}

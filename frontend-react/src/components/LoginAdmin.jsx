@@ -1,8 +1,9 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   iniciarSesionAdmin,
-  obtenerPerfilAdmin
+  obtenerPerfilAdmin,
+  obtenerSolicitudesAdmin
 } from "../api";
 
 function LoginAdmin({ onVolver }) {
@@ -12,16 +13,62 @@ function LoginAdmin({ onVolver }) {
   const [error, setError] = useState("");
   const [cargando, setCargando] = useState(false);
 
+  const [solicitudes, setSolicitudes] = useState([]);
+  const [cargandoSolicitudes, setCargandoSolicitudes] =
+    useState(false);
+  const [errorSolicitudes, setErrorSolicitudes] = useState("");
+
+  // Consultar solicitudes cuando el administrador ingresa
+  useEffect(() => {
+    if (!sesion) return;
+
+    let activo = true;
+
+    async function cargarSolicitudes() {
+      setCargandoSolicitudes(true);
+      setErrorSolicitudes("");
+
+      try {
+        const datos = await obtenerSolicitudesAdmin(
+          sesion.token
+        );
+
+        if (activo) {
+          setSolicitudes(Array.isArray(datos) ? datos : []);
+        }
+      } catch (error) {
+        if (activo) {
+          setErrorSolicitudes(error.message);
+        }
+      } finally {
+        if (activo) {
+          setCargandoSolicitudes(false);
+        }
+      }
+    }
+
+    cargarSolicitudes();
+
+    return () => {
+      activo = false;
+    };
+  }, [sesion]);
+
+  // Iniciar sesión
   async function manejarEnvio(event) {
     event.preventDefault();
     setError("");
     setCargando(true);
 
     try {
-      const inicio = await iniciarSesionAdmin(correo, password);
+      const inicio = await iniciarSesionAdmin(
+        correo,
+        password
+      );
 
-      // Verificar el token en la ruta privada
-      const perfil = await obtenerPerfilAdmin(inicio.token);
+      const perfil = await obtenerPerfilAdmin(
+        inicio.token
+      );
 
       setSesion({
         token: inicio.token,
@@ -39,30 +86,114 @@ function LoginAdmin({ onVolver }) {
     }
   }
 
+  function cerrarSesion() {
+    setSesion(null);
+    setSolicitudes([]);
+    setErrorSolicitudes("");
+  }
+
+  function mostrarFecha(valor) {
+    if (!valor) return "Sin fecha";
+
+    const fecha = new Date(valor);
+
+    return Number.isNaN(fecha.getTime())
+      ? "Sin fecha"
+      : fecha.toLocaleString("es-CO");
+  }
+
   return (
     <main className="pagina-admin">
-      <div className="admin-contenedor">
+      <div
+        className={`admin-contenedor ${
+          sesion ? "admin-panel" : ""
+        }`}
+      >
         <p className="etiqueta">IMPULSO DIGITAL</p>
 
         {sesion ? (
           <>
-            <h1>Acceso autorizado</h1>
+            <h1>Panel de administración</h1>
 
             <p>
               Bienvenido,{" "}
               {sesion.administrador.nombre ||
-                sesion.administrador.correo}.
+                sesion.administrador.correo}
             </p>
 
-            <p>
-              Tu identidad fue verificada correctamente
-              mediante nuestro servidor.
-            </p>
+            <div className="admin-resumen">
+              <div>
+                <span>Solicitudes recibidas</span>
+                <strong>
+                  {cargandoSolicitudes
+                    ? "..."
+                    : errorSolicitudes
+                      ? "--"
+                      : solicitudes.length}
+                </strong>
+              </div>
+            </div>
+
+            <h2>Solicitudes de clientes</h2>
+
+            {cargandoSolicitudes && (
+              <p>Cargando solicitudes...</p>
+            )}
+
+            {errorSolicitudes && (
+              <p role="alert">{errorSolicitudes}</p>
+            )}
+
+            {!cargandoSolicitudes &&
+              !errorSolicitudes &&
+              solicitudes.length === 0 && (
+                <p>No hay solicitudes registradas.</p>
+              )}
+
+            <div className="lista-solicitudes">
+              {solicitudes.map((solicitud) => (
+                <article
+                  className="solicitud-tarjeta"
+                  key={solicitud._id}
+                >
+                  <h3>{solicitud.nombre}</h3>
+
+                  <p>
+                    <strong>Negocio:</strong>{" "}
+                    {solicitud.negocio || "No especificado"}
+                  </p>
+
+                  <p>
+                    <strong>Servicio:</strong>{" "}
+                    {solicitud.servicio}
+                  </p>
+
+                  <p>
+                    <strong>Correo:</strong>{" "}
+                    {solicitud.correo}
+                  </p>
+
+                  <p>
+                    <strong>Teléfono:</strong>{" "}
+                    {solicitud.telefono || "No registrado"}
+                  </p>
+
+                  <p>
+                    <strong>Mensaje:</strong>{" "}
+                    {solicitud.mensaje}
+                  </p>
+
+                  <small>
+                    {mostrarFecha(solicitud.fecha)}
+                  </small>
+                </article>
+              ))}
+            </div>
 
             <button
-              type="button"
               className="boton boton-rojo"
-              onClick={() => setSesion(null)}
+              type="button"
+              onClick={cerrarSesion}
             >
               Cerrar sesión
             </button>
@@ -72,8 +203,8 @@ function LoginAdmin({ onVolver }) {
             <h1>Acceso administrativo</h1>
 
             <p>
-              Ingresa tus credenciales para acceder
-              a Impulso Digital.
+              Ingresa tus credenciales para administrar
+              Impulso Digital.
             </p>
 
             <form onSubmit={manejarEnvio}>
@@ -106,8 +237,8 @@ function LoginAdmin({ onVolver }) {
               {error && <p role="alert">{error}</p>}
 
               <button
-                type="submit"
                 className="boton boton-rojo"
+                type="submit"
                 disabled={cargando}
               >
                 {cargando
