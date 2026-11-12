@@ -89,3 +89,48 @@ export async function obtenerSolicitudesAdmin(token) {
 
   return datos;
 }
+
+export async function obtenerServiciosAdmin(token) {
+  const respuesta = await fetch(
+    `${API_URL}/api/admin/servicios`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  const datos = await respuesta.json();
+
+  if (!respuesta.ok) {
+    throw new Error(
+      datos.mensaje || "No se pudieron cargar los servicios"
+    );
+  }
+
+  return datos;
+}
+
+export async function crearServicioAdmin(token, servicio) {
+  const respuesta = await fetch(
+    `${API_URL}/api/admin/servicios`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(servicio)
+    }
+  );
+
+  const datos = await respuesta.json();
+
+  if (!respuesta.ok) {
+    throw new Error(
+      datos.mensaje || "No se pudo crear el servicio"
+    );
+  }
+
+  return datos;
+}

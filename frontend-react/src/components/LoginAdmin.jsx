@@ -5,6 +5,7 @@ import {
   obtenerPerfilAdmin,
   obtenerSolicitudesAdmin
 } from "../api";
+import GestionServicios from "./GestionServicios";
 
 function LoginAdmin({ onVolver }) {
   const [correo, setCorreo] = useState("");
@@ -189,7 +190,8 @@ function LoginAdmin({ onVolver }) {
                 </article>
               ))}
             </div>
-
+            {/* Administración del catálogo */}
+            <GestionServicios token={sesion.token} />
             <button
               className="boton boton-rojo"
               type="button"

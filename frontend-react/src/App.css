@@ -517,3 +517,65 @@ footer {
   border: none;
   cursor: pointer;
 }
+
+/* ADMINISTRACION DE SERVICIOS */
+
+.gestion-servicios {
+  margin-top: 45px;
+  padding-top: 30px;
+  border-top: 1px solid #343945;
+}
+
+.gestion-servicios h3 {
+  margin-top: 35px;
+  color: white;
+}
+
+.gestion-lista {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%, 220px), 1fr)
+  );
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.gestion-tarjeta {
+  background: #10131a;
+  border: 1px solid #343945;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.gestion-tarjeta h4 {
+  color: #ff5546;
+  margin-top: 0;
+}
+
+.gestion-tarjeta span {
+  color: #65d995;
+  font-weight: bold;
+}
+
+.gestion-formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 650px;
+}
+
+.gestion-formulario input,
+.gestion-formulario textarea {
+  background: #10131a;
+  color: white;
+  border: 1px solid #404654;
+  padding: 14px;
+  border-radius: 8px;
+}
+
+.gestion-formulario button {
+  align-self: flex-start;
+  border: none;
+  cursor: pointer;
+}

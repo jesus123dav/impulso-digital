@@ -279,6 +279,77 @@ app.get("/api/admin/solicitudes", verificarToken, async (req, res) => {
   }
 });
 
+// CONSULTAR TODOS LOS SERVICIOS - ADMINISTRADOR
+app.get("/api/admin/servicios", verificarToken, async (req, res) => {
+  try {
+    const servicios = await Servicio.find()
+      .sort({ nombre: 1 })
+      .lean();
+
+    res.status(200).json(servicios);
+
+  } catch (error) {
+    console.error("Error al consultar servicios:", error.message);
+
+    res.status(500).json({
+      mensaje: "No se pudieron consultar los servicios"
+    });
+  }
+});
+
+// AGREGAR UN SERVICIO - ADMINISTRADOR
+app.post("/api/admin/servicios", verificarToken, async (req, res) => {
+  try {
+    const { nombre, categoria, descripcion } = req.body || {};
+
+    if (
+      typeof nombre !== "string" ||
+      typeof categoria !== "string" ||
+      typeof descripcion !== "string"
+    ) {
+      return res.status(400).json({
+        mensaje: "Todos los campos deben contener texto"
+      });
+    }
+
+    const datos = {
+      nombre: nombre.trim(),
+      categoria: categoria.trim(),
+      descripcion: descripcion.trim()
+    };
+
+    if (
+      !datos.nombre ||
+      !datos.categoria ||
+      !datos.descripcion ||
+      datos.nombre.length > 100 ||
+      datos.categoria.length > 80 ||
+      datos.descripcion.length > 1000
+    ) {
+      return res.status(400).json({
+        mensaje: "Revisa los campos y sus longitudes"
+      });
+    }
+
+    const nuevoServicio = await Servicio.create({
+      ...datos,
+      activo: true
+    });
+
+    res.status(201).json({
+      mensaje: "Servicio creado correctamente",
+      servicio: nuevoServicio
+    });
+
+  } catch (error) {
+    console.error("Error al crear servicio:", error.message);
+
+    res.status(500).json({
+      mensaje: "No se pudo crear el servicio"
+    });
+  }
+});
+
 // 6. CONECTAR A MONGODB
 async function iniciarServidor() {
   try {
