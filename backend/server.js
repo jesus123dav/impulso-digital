@@ -21,13 +21,51 @@ const verificarToken = require("./middleware/auth");
 
 // 2. CONFIGURAR EL SERVIDOR
 const app = express();
+app.set("trust proxy", 1);
 const PORT = process.env.PORT || 3001;
 
 // Permitir recibir información en formato JSON
 app.use(express.json());
 
 // Permitir solicitudes desde nuestro frontend
-app.use(cors());
+const origenesPermitidos = [
+  "http://localhost:5173",
+  process.env.FRONTEND_ORIGIN
+].filter(Boolean);
+
+app.use(cors({
+  origin: (origen, callback) => {
+    if (!origen || origenesPermitidos.includes(origen)) {
+      return callback(null, true);
+    }
+
+    return callback(null, false);
+  }
+}));
+
+// LIMITAR INTENTOS DE INICIO DE SESIÓN
+const limiteLogin = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 5,
+  skipSuccessfulRequests: true,
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  message: {
+    mensaje: "Demasiados intentos. Intenta nuevamente en 15 minutos."
+  }
+});
+
+// LIMITAR SOLICITUDES DE CONTACTO
+const limiteContacto = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 5,
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  message: {
+    mensaje: "Demasiadas solicitudes. Intenta más tarde."
+  }
+});
+
 
 // 3. CREAR EL MODELO DE SERVICIOS
 const servicioSchema = new mongoose.Schema(
@@ -136,7 +174,7 @@ app.get("/api/servicios", async (req, res) => {
 });
 
 // RECIBIR SOLICITUDES DE LOS CLIENTES
-app.post("/api/contacto", async (req, res) => {
+app.post("/api/contacto", limiteContacto, async (req, res) => {
   try {
     const {
       nombre,
@@ -178,7 +216,7 @@ app.post("/api/contacto", async (req, res) => {
 
 
 // INICIO DE SESIÓN DEL ADMINISTRADOR
-app.post("/api/admin/login", async (req, res) => {
+app.post("/api/admin/login", limiteLogin, async (req, res) => {
   try {
     const { correo, password } = req.body;
 
