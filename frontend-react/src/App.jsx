@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { obtenerServicios, enviarSolicitud } from "./api";
 import "./App.css";
 import LoginAdmin from "./components/LoginAdmin";
-
+import AsistenteIA from "./components/AsistenteIA";
 
 function Catalogo() {
   const [servicios, setServicios] = useState([]);
@@ -388,7 +388,7 @@ function App() {
         <Proceso />
         <Contacto />
       </main>
-
+      <AsistenteIA />
       <footer>
         <p>
           © 2026 Impulso Digital.

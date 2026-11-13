@@ -182,3 +182,23 @@ export async function cambiarEstadoServicioAdmin(token, id, activo) {
 
   return datos;
 }
+
+export async function consultarIA(pregunta) {
+  const respuesta = await fetch(`${API_URL}/api/ia`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ pregunta })
+  });
+
+  const datos = await respuesta.json();
+
+  if (!respuesta.ok) {
+    throw new Error(
+      datos.mensaje || "No se pudo consultar el asistente"
+    );
+  }
+
+  return datos;
+}
