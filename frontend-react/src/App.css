@@ -152,40 +152,99 @@
   margin-top: 45px;
 }
 
-.tarjeta {
+/* TARJETAS 3D */
+.tarjeta-flip {
+  min-height: 310px;
+  perspective: 1000px;
+  background: transparent;
+}
+.tarjeta-flip-interior {
+  position: relative;
+  width: 100%;
+  min-height: 310px;
+  transform-style: preserve-3d;
+  transition: transform 0.7s ease;
+}
+.tarjeta-cara {
+  position: absolute;
+  inset: 0;
+  min-height: 310px;
   padding: 32px;
+  display: flex;
+  flex-direction: column;
   background: #191c24;
   border: 1px solid #333742;
   border-radius: 14px;
-  transition: 0.3s;
+  color: white;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
 }
 
-.tarjeta:hover {
-  transform: translateY(-6px);
-  border-color: #ff4938;
+.tarjeta-frontal {
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
-.numero {
+.tarjeta-trasera {
+  transform: rotateY(180deg);
+  justify-content: space-between;
+}
+
+.tarjeta-categoria {
   color: #ff4938;
-  font-size: 24px;
+  font-size: 13px;
   font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
-.tarjeta h3 {
-  margin: 26px 0 14px;
+.tarjeta-cara h3 {
+  margin: 18px 0 14px;
   font-size: 23px;
 }
 
-.tarjeta p {
+.tarjeta-trasera p {
   color: #bcbfc7;
   line-height: 1.7;
-  min-height: 115px;
+  margin: 0;
 }
 
-.tarjeta a {
+.tarjeta-ver,
+.tarjeta-acciones button {
+  background: transparent;
+  border: 1px solid #ff4938;
+  color: #ff5546;
+  padding: 10px 14px;
+  border-radius: 7px;
+  font: inherit;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.tarjeta-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+}
+
+.tarjeta-acciones a {
   color: #ff5546;
   text-decoration: none;
   font-weight: bold;
+}
+
+/* GIRO CON EL CURSOR */
+@media (hover: hover) and (pointer: fine) {
+  .tarjeta-flip:not(.bloquear-hover):hover .tarjeta-flip-interior {
+    transform: rotateY(180deg);
+  }
+}
+
+/* GIRO MEDIANTE TOQUE O BOTÓN */
+.tarjeta-flip.volteada .tarjeta-flip-interior {
+  transform: rotateY(180deg);
 }
 
 /* PROCESO */

@@ -5,6 +5,63 @@ import "./App.css";
 import LoginAdmin from "./components/LoginAdmin";
 import AsistenteIA from "./components/AsistenteIA";
 
+
+function TarjetaServicio({ servicio }) {
+  const [volteada, setVolteada] = useState(false);
+  const [bloquearHover, setBloquearHover] = useState(false);
+
+  return (
+    <article
+      className={`tarjeta-flip ${volteada ? "volteada" : ""} ${bloquearHover ? "bloquear-hover" : ""}`}
+      onMouseLeave={() => setBloquearHover(false)}
+    >
+      <div className="tarjeta-flip-interior">
+
+        {/* CARA FRONTAL */}
+        <div className="tarjeta-cara tarjeta-frontal">
+          <span className="tarjeta-categoria">
+            {servicio.categoria}
+          </span>
+
+          <h3>{servicio.nombre}</h3>
+
+          <button
+            type="button"
+            className="tarjeta-ver"
+            onClick={() => setVolteada(true)}
+          >
+            Ver detalles ↻
+          </button>
+        </div>
+
+        {/* CARA POSTERIOR */}
+        <div className="tarjeta-cara tarjeta-trasera">
+          <h3>{servicio.nombre}</h3>
+
+          <p>{servicio.descripcion}</p>
+
+          <div className="tarjeta-acciones">
+            <a href="#contacto">
+              Solicitar información →
+            </a>
+
+            <button
+              type="button"
+              onClick={() => {
+                setVolteada(false);
+                setBloquearHover(true);
+              }}
+            >
+              Volver
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </article>
+  );
+}
+
 function Catalogo() {
   const [servicios, setServicios] = useState([]);
   const [cargando, setCargando] = useState(true);
@@ -48,17 +105,11 @@ function Catalogo() {
 
       <div className="catalogo">
         {servicios.map((servicio) => (
-          <article className="tarjeta" key={servicio._id}>
 
-            <h3>{servicio.nombre}</h3>
-
-            <p>{servicio.descripcion}</p>
-
-            <a href="#contacto">
-              Solicitar información →
-            </a>
-
-          </article>
+            <TarjetaServicio
+              key={servicio._id}
+              servicio={servicio}
+            />
         ))}
       </div>
 
